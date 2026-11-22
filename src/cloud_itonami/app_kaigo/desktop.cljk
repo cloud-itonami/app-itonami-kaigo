@@ -9,33 +9,14 @@
 (defonce root (atom nil))
 
 (defn- set-head!
-  "The old +page.svelte <svelte:head> set the document title and a
-  SoftwareApplication JSON-LD block at runtime (the SvelteKit static
-  fallback shipped neither — README §2). Reproduce that here."
+  "Set the document title. The old +page.svelte <svelte:head> also injected
+  a Google Fonts stylesheet and a SoftwareApplication JSON-LD block at
+  runtime; both are gone: the restricted guest has no web fonts (system
+  fonts) and no remote references, and the app runs from the Tauri shell,
+  not from a web search index."
   []
   (set! (.-title js/document)
-        "Giemon Kaigo — ロボットが支える在宅介護・住宅改修・介護保険ナビ")
-  (when-let [link (.createElement js/document "link")]
-    (.setAttribute link "rel" "stylesheet")
-    (.setAttribute link "href"
-                   "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap")
-    (.appendChild (.-head js/document) link))
-  (when-let [script (.createElement js/document "script")]
-    (.setAttribute script "type" "application/ld+json")
-    (set! (.-textContent script)
-          ;; js/JSON.stringify on clj->js — `json-encode` does not exist in
-          ;; CLJS (the compile WARNING #1 was an undeclared var = runtime
-          ;; boom). JSON-LD content ported verbatim from +page.svelte:146-156.
-          (js/JSON.stringify
-            (clj->js
-              {"@context" "https://schema.org"
-               "@type" "SoftwareApplication"
-               "name" "Giemon Kaigo"
-               "description" "Giemon ロボットを活用した在宅介護支援プラットフォーム。住宅改修・介護保険ナビ・Well-Becoming AI。"
-               "applicationCategory" "HealthApplication"
-               "operatingSystem" "Web"
-               "brand" {"@type" "Brand" "name" "Giemon"}})))
-    (.appendChild (.-head js/document) script)))
+        "Giemon Kaigo — ロボットが支える在宅介護・住宅改修・介護保険ナビ"))
 
 (defn init! []
   (set-head!)
