@@ -19,7 +19,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'none'; script-src 'self' 'sha256-JEOuT1vHljEHI0xxIewRO/7Cccry2rV3V3NYEYMlVIU=' 'sha256-yE9MXPI31dLBOQi9RoiD9Ex136O2/D6rHDMMG/Bou1g='; style-src 'self' 'sha256-PFfTLzr8gpp5ylaN1MCc2x+jwv4+3UjcNF06A47bMy0='; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"
+      "csp": null
     }
   },
   "bundle": {

@@ -75,8 +75,6 @@
 .kg-viewer { position: relative; background: #f2f2f2; border: 1px solid #e6e6e6; border-radius: 8px; overflow: hidden; aspect-ratio: 16/10; }
 .kg-viewer iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .kg-viewer-note { position: absolute; bottom: 8px; right: 8px; font-size: 9px; color: #949494; pointer-events: none; user-select: none; background: rgba(255,255,255,.8); padding: 2px 6px; border-radius: 4px; }
-.kg-viewer-offline { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: #eef1f6; color: #616161; font-size: 12px; text-align: center; padding: 16px; }
-.kg-viewer-offline-model { font-size: 20px; font-weight: 700; color: #0017c1; }
 .kg-robot-meta .tag { display: inline-flex; padding: 2px 10px; border-radius: 999px; background: #e8f1fe; color: #0017c1; font-size: 11px; font-weight: 500; margin-bottom: 12px; }
 .kg-robot-meta h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
 .kg-check-list { display: grid; gap: 10px; }
@@ -283,12 +281,9 @@
         (for [t state/robot-tabs] [robot-tab t selected]))
       [:div.kg-robot-grid {:role "tabpanel"}
        [:div.kg-viewer
-        ;; The 3D viewer lived at giemon.etzhayyim.com and needed the
-        ;; network; the restricted guest has connect-src 'none', so the
-        ;; offline edition shows a placeholder instead (KOTOBA-159).
-        [:div.kg-viewer-offline
-         [:div.kg-viewer-offline-model (:model tab)]
-         [:p "3D プレビューはこの版では利用できません（オフライン版）"]]
+        [:iframe {:src (str "https://giemon.etzhayyim.com/viewer.htm?model=" (:model tab))
+                  :title (str "Giemon " selected " 3D ビューア")
+                  :loading "lazy", :allow "accelerometer"}]
         [:div.kg-viewer-note "WebGPU / WebGL2"]]
        [:div.kg-robot-meta
         [:div.tag (:tag detail)]
